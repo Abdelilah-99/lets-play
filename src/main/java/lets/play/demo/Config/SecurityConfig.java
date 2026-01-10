@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,9 +30,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
-                )
-                .httpBasic(basic -> basic.disable());
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtConf, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -43,11 +46,11 @@ public class SecurityConfig {
 
     // @Bean
     // public UserDetailsService userDetailsService() {
-    //     UserDetails user = User.builder()
-    //             .username("user")
-    //             .password(passwordEncoder().encode("password"))
-    //             .roles("USER")
-    //             .build();
-    //     return new InMemoryUserDetailsManager(user);
+    // UserDetails user = User.builder()
+    // .username("user")
+    // .password(passwordEncoder().encode("password"))
+    // .roles("USER")
+    // .build();
+    // return new InMemoryUserDetailsManager(user);
     // }
 }
