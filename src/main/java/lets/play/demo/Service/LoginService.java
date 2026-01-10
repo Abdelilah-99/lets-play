@@ -25,7 +25,7 @@ public class LoginService {
         User user = loginRepo.findByEmail(req.email());
         String pwd = req.password();
         if (passwordEncoder.matches(pwd, user.password)) {
-            String token = jwtUtils.generateToken(user.id);
+            String token = jwtUtils.generateToken(user.id, user.role);
             return new LoginResDto("user has logged in", token);
         }
         return new LoginResDto("authentication failed", null);

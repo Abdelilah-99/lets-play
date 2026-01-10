@@ -41,21 +41,22 @@ public class JwtConf extends OncePerRequestFilter {
         }
         try {
             final String jwt = authHeader.substring(7);
-            final String id = jwtUtils.getIdFromToken(jwt);
+            final String id = jwtUtils.extractid(jwt);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (id != null && auth == null) {
                 UserDetails userdetails = this.userDetailServices.loadUserByUsername(id);
-                if (userdetails.getUsername().equals(id) || jwtUtils.validateJwtToken(jwt)) {
+                if (userdetails.getUsername().equals(id) || jwtUtils.validateToken(jwt, userdetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userdetails,
                             null,
                             userdetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
         } catch (Exception e) {
             // TODO: handle exception
+            System.out.println("why: " + e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

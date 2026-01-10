@@ -21,7 +21,7 @@ public class UserDetailServices implements UserDetailsService {
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         lets.play.demo.Entity.User user = registerRepo.findById(id).orElseThrow();
         return User.builder()
-                .username(user.name)
+                .username(user.id)
                 .password(user.password)
                 .authorities(new SimpleGrantedAuthority(user.role))
                 .build();
