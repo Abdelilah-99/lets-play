@@ -25,7 +25,7 @@ public class User {
     @Size(min = 6, max = 20)
     @JsonIgnore
     public String password;
-    public String role;
+    public String role = "ROLE_USER";
 
     public String getId() {
         return id;

@@ -1,2 +1,2 @@
 package lets.play.demo.DTOs;
-public record RegisterReqDto(String name, String password, String email, String role) {}
+public record RegisterReqDto(String name, String password, String email) {}

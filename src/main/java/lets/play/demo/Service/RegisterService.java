@@ -2,7 +2,6 @@ package lets.play.demo.Service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import lets.play.demo.DTOs.RegisterResDto;
 import lets.play.demo.Entity.User;
 import lets.play.demo.Repository.RegisterRepo;

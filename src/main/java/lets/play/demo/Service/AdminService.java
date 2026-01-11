@@ -2,6 +2,7 @@ package lets.play.demo.Service;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lets.play.demo.DTOs.UsersListDto;
@@ -17,7 +18,8 @@ public class AdminService {
     }
 
     public UsersListDto getAllUsers() {
-        List<User> users = userRepo.findAll();
+        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<User> users = userRepo.findAllByIdNot(id);
         return new UsersListDto(users);
     }
 }
