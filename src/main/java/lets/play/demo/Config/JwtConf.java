@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -22,12 +20,10 @@ import lets.play.demo.Repository.RegisterRepo;
 public class JwtConf extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailServices userDetailServices;
-    private final RegisterRepo registerRepo;
 
-    public JwtConf(JwtUtils jwtUtils, UserDetailServices userDetailServices, RegisterRepo registerRepo) {
+    public JwtConf(JwtUtils jwtUtils, UserDetailServices userDetailServices) {
         this.jwtUtils = jwtUtils;
         this.userDetailServices = userDetailServices;
-        this.registerRepo = registerRepo;
     }
 
     @Override

@@ -37,14 +37,13 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     public MongoClient mongoClient() {
         String connectionString = String.format(
-            "mongodb://%s:%s@%s:%d/%s?authSource=%s",
-            username,
-            password,
-            host,
-            port,
-            database,
-            authenticationDatabase
-        );
+                "mongodb://%s:%s@%s:%d/%s?authSource=%s",
+                username,
+                password,
+                host,
+                port,
+                database,
+                authenticationDatabase);
         return MongoClients.create(connectionString);
     }
 }

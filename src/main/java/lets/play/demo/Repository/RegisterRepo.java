@@ -7,5 +7,5 @@ import lets.play.demo.Entity.User;
 
 @Repository
 public interface RegisterRepo extends MongoRepository<User, String>{
-    
+    boolean existsByEmail(String email);
 }
