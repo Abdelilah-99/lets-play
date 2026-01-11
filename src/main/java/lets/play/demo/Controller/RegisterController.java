@@ -2,6 +2,7 @@ package lets.play.demo.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import lets.play.demo.DTOs.*;
@@ -16,7 +17,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResDto> register(RegisterReqDto req) {
+    public ResponseEntity<RegisterResDto> register(@RequestBody RegisterReqDto req) {
         RegisterResDto msg = registerService.registerService(req);
         return ResponseEntity.ok(msg);
     }

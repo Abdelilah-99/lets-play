@@ -24,10 +24,9 @@ public class RegisterService {
         // this.registerRepo.save(newUser);
         // User newUser = new User(null, null, null, null, null)
         User user = new User();
-        user.setEmail(req.email());
+        user.setEmail(req.email().toLowerCase());
         user.setName(req.name());
         user.setPassword(passwordEncoder.encode(req.password()));
-        user.setRole(req.role());
         registerRepo.save(user);
         return new RegisterResDto("Registration Succeed");
     }

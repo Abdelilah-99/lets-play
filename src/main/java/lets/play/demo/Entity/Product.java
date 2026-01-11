@@ -1,14 +1,23 @@
 package lets.play.demo.Entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 
 @Document(collection = "products")
 public class Product {
     @Id
     public String id;
+    @NotBlank(message = "product required")
+    @Size(min = 3, max = 15)
     public String name;
+    @NotBlank(message = "description required")
+    @Size(min = 5, max = 1000)
     public String description;
+    @NotBlank(message = "price required")
     public Double price;
     public String userId;
 
@@ -46,10 +55,6 @@ public class Product {
 
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public Product() {

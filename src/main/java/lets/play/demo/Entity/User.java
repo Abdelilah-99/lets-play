@@ -1,14 +1,29 @@
 package lets.play.demo.Entity;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 
 @Document(collection = "users")
 public class User {
     @Id
     public String id;
+    @NotBlank(message = "name required")
     public String name;
+    @Indexed(unique = true)
+    @NotBlank(message = "email required")
+    @Email(message = "valide email required")
     public String email;
+    @NotBlank(message = "pwd is required")
+    @Size(min = 6, max = 20)
+    @JsonIgnore
     public String password;
     public String role;
 
@@ -46,10 +61,6 @@ public class User {
 
     public String getRole() {
         return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public User() {
