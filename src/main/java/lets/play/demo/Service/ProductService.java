@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lets.play.demo.DTOs.ProductCreationDto;
+import lets.play.demo.DTOs.ProductUpdateDto;
 import lets.play.demo.DTOs.ProductsListDto;
 import lets.play.demo.Entity.Product;
 import lets.play.demo.Exceptions.InvalidProductException;
@@ -48,5 +49,20 @@ public class ProductService {
             return;
         }
         throw new AuthorizationDeniedException("Access denied");
+    }
+
+    public void updateProduct(String id, ProductUpdateDto req) {
+        Authentication userId = SecurityContextHolder.getContext().getAuthentication();
+        Product product = productRepo.findById(id).orElseThrow(() -> {
+            throw new InvalidProductException("Product not exist");
+        });
+        if (userId.getName().equals(product.userId)) {
+            product.setDescription(req.des());
+            product.setName(req.name());
+            product.setPrice(req.price());
+            productRepo.save(product);
+            return;
+        }
+        throw new AuthorizationDeniedException("Acces denied");
     }
 }

@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lets.play.demo.DTOs.ProductCreationDto;
+import lets.play.demo.DTOs.ProductUpdateDto;
 import lets.play.demo.DTOs.ProductsListDto;
 import lets.play.demo.Service.ProductService;
 
@@ -36,10 +38,17 @@ public class ProductsController {
         return ResponseEntity.ok("product created succefully");
     }
 
-    @PreAuthorize("isAuthenticated() || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated() || hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletProduct(@PathVariable String id) {
         productService.deletProduct(id);
         return ResponseEntity.ok("product deleted succefully");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable String id, @RequestBody ProductUpdateDto req) {
+        productService.updateProduct(id, req);
+        return ResponseEntity.ok("product updated succefully");
     }
 }
