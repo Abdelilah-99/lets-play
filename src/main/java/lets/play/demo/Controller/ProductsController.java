@@ -1,6 +1,8 @@
 package lets.play.demo.Controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +29,17 @@ public class ProductsController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping
     public ResponseEntity<?> createProducts(@RequestBody ProductCreationDto req) {
         productService.createProducts(req);
         return ResponseEntity.ok("product created succefully");
+    }
+
+    @PreAuthorize("isAuthenticated() || hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletProduct(@PathVariable String id) {
+        productService.deletProduct(id);
+        return ResponseEntity.ok("product deleted succefully");
     }
 }
