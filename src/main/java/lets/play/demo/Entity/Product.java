@@ -12,13 +12,15 @@ public class Product {
     public Double price;
     public String userId;
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

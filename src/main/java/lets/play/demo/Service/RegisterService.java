@@ -30,7 +30,7 @@ public class RegisterService {
         user.setEmail(email);
         user.setName(req.name());
         user.setPassword(passwordEncoder.encode(req.password()));
-        registerRepo.save(user); // MongoDB will throw DuplicateKeyException if email exists
+        registerRepo.save(user);
         return new RegisterResDto("Registration Succeed");
     }
 }
