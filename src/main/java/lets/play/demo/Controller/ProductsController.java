@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lets.play.demo.DTOs.ProductCreationDto;
 import lets.play.demo.DTOs.ProductUpdateDto;
 import lets.play.demo.DTOs.ProductsListDto;
@@ -47,7 +48,7 @@ public class ProductsController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable String id, @RequestBody ProductUpdateDto req) {
+    public ResponseEntity<?> updateProduct(@PathVariable String id, @Valid @RequestBody ProductUpdateDto req) {
         productService.updateProduct(id, req);
         return ResponseEntity.ok("product updated succefully");
     }
