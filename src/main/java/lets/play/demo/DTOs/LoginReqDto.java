@@ -1,4 +1,10 @@
 package lets.play.demo.DTOs;
 
-public record LoginReqDto(String email, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginReqDto(
+    @NotBlank
+    String email,
+    @NotBlank
+    String password) {
 }

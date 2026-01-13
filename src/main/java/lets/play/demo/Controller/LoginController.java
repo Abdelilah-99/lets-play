@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lets.play.demo.DTOs.LoginReqDto;
 import lets.play.demo.DTOs.LoginResDto;
 import lets.play.demo.Service.LoginService;
@@ -21,7 +23,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<LoginResDto> login(@RequestBody LoginReqDto req) {
+    @PermitAll
+    private ResponseEntity<LoginResDto> login(@Valid @RequestBody LoginReqDto req) {
         LoginResDto res = loginService.login(req);
         return ResponseEntity.ok(res);
     }

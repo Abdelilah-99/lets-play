@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lets.play.demo.DTOs.ProductCreationDto;
 import lets.play.demo.DTOs.ProductUpdateDto;
@@ -27,6 +28,7 @@ public class ProductsController {
     }
 
     @GetMapping
+    @PermitAll
     public ResponseEntity<ProductsListDto> getAllProduct() {
         ProductsListDto res = productService.getAllProducts();
         return ResponseEntity.ok(res);
