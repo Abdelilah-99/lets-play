@@ -16,9 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtConf jwtConf;
+    private final CustomCorsConfiguration customCorsConfiguration;
 
-    public SecurityConfig(JwtConf jwtConf) {
+    public SecurityConfig(JwtConf jwtConf, CustomCorsConfiguration customCorsConfiguration) {
         this.jwtConf = jwtConf;
+        this.customCorsConfiguration = customCorsConfiguration;
     }
 
     @Bean
@@ -30,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/products")
                         .permitAll()
                         .anyRequest().authenticated())
+                .cors(c -> c.configurationSource(customCorsConfiguration))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtConf, UsernamePasswordAuthenticationFilter.class);
