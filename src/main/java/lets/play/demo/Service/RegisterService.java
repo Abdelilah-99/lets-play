@@ -2,14 +2,13 @@ package lets.play.demo.Service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lets.play.demo.DTOs.RegisterResDto;
 import lets.play.demo.Entity.User;
 import lets.play.demo.Exceptions.EmailAlreadyExistException;
 import lets.play.demo.Repository.RegisterRepo;
 import lets.play.demo.DTOs.RegisterReqDto;
+import lets.play.demo.Utils.DataSanitizer;
 
 @Service
 public class RegisterService {
@@ -22,14 +21,21 @@ public class RegisterService {
     }
 
     public RegisterResDto registerService(@Valid RegisterReqDto req) {
-        String email = req.email().toLowerCase();
+        String email = DataSanitizer.sanitizeEmail(req.email());
+        if (email == null) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        String name = DataSanitizer.sanitizeString(req.name());
+        String password = DataSanitizer.sanitizePassword(req.password());
+        
         if (registerRepo.existsByEmail(email)) {
             throw new EmailAlreadyExistException("email already exist");
         }
         User user = new User();
         user.setEmail(email);
-        user.setName(req.name());
-        user.setPassword(passwordEncoder.encode(req.password()));
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password));
         registerRepo.save(user);
         return new RegisterResDto("Registration Succeed");
     }

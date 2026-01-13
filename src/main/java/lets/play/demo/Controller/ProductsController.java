@@ -17,6 +17,7 @@ import lets.play.demo.DTOs.ProductCreationDto;
 import lets.play.demo.DTOs.ProductUpdateDto;
 import lets.play.demo.DTOs.ProductsListDto;
 import lets.play.demo.Service.ProductService;
+import lets.play.demo.Utils.DtoSanitizer;
 
 @RestController
 @RequestMapping("/api/products")
@@ -36,8 +37,11 @@ public class ProductsController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<?> createProducts(@RequestBody ProductCreationDto req) {
-        productService.createProducts(req);
+    public ResponseEntity<?> createProducts(@Valid @RequestBody ProductCreationDto req) {
+        DtoSanitizer.validateProductCreationDto(req);
+        ProductCreationDto sanitizedReq = DtoSanitizer.sanitizeProductCreationDto(req);
+        
+        productService.createProducts(sanitizedReq);
         return ResponseEntity.ok("product created succefully");
     }
 
@@ -51,7 +55,10 @@ public class ProductsController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable String id, @Valid @RequestBody ProductUpdateDto req) {
-        productService.updateProduct(id, req);
+        DtoSanitizer.validateProductCreationDto(new ProductCreationDto(req.name(), req.des(), req.price()));
+        ProductUpdateDto sanitizedReq = DtoSanitizer.sanitizeProductUpdateDto(req);
+        
+        productService.updateProduct(id, sanitizedReq);
         return ResponseEntity.ok("product updated succefully");
     }
 }

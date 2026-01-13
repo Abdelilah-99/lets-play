@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lets.play.demo.DTOs.LoginReqDto;
 import lets.play.demo.DTOs.LoginResDto;
 import lets.play.demo.Service.LoginService;
+import lets.play.demo.Utils.DtoSanitizer;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,7 +26,10 @@ public class LoginController {
     @PostMapping("/login")
     @PermitAll
     private ResponseEntity<LoginResDto> login(@Valid @RequestBody LoginReqDto req) {
-        LoginResDto res = loginService.login(req);
+        DtoSanitizer.validateLoginReqDto(req);
+        LoginReqDto sanitizedReq = DtoSanitizer.sanitizeLoginReqDto(req);
+        
+        LoginResDto res = loginService.login(sanitizedReq);
         return ResponseEntity.ok(res);
     }
 }

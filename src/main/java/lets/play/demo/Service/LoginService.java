@@ -10,6 +10,7 @@ import lets.play.demo.Entity.User;
 import lets.play.demo.Exceptions.EmailNotFoundException;
 import lets.play.demo.Exceptions.InvalidePasswordException;
 import lets.play.demo.Repository.LoginRepo;
+import lets.play.demo.Utils.DataSanitizer;
 
 @Service
 public class LoginService {
@@ -24,11 +25,17 @@ public class LoginService {
     }
 
     public LoginResDto login(LoginReqDto req) {
-        User user = loginRepo.findByEmail(req.email()).orElseThrow(()->{
+        String email = DataSanitizer.sanitizeEmail(req.email());
+        if (email == null) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        String password = DataSanitizer.sanitizePassword(req.password());
+        
+        User user = loginRepo.findByEmail(email).orElseThrow(()->{
             throw new EmailNotFoundException("Email Not Found");
         });
-        String pwd = req.password();
-        if (!passwordEncoder.matches(pwd, user.password)) {
+        if (!passwordEncoder.matches(password, user.password)) {
             throw new InvalidePasswordException("Incorrect Password");
         }
         // return new LoginResDto("authentication failed", null);

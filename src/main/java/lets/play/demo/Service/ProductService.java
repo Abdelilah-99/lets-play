@@ -14,6 +14,7 @@ import lets.play.demo.DTOs.ProductsListDto;
 import lets.play.demo.Entity.Product;
 import lets.play.demo.Exceptions.InvalidProductException;
 import lets.play.demo.Repository.ProductRepo;
+import lets.play.demo.Utils.DataSanitizer;
 
 @Service
 public class ProductService {
@@ -30,10 +31,18 @@ public class ProductService {
 
     public void createProducts(ProductCreationDto req) {
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        String name = DataSanitizer.sanitizeProductText(req.name());
+        String description = DataSanitizer.sanitizeProductText(req.des());
+        
+        if (name.isEmpty() || description.isEmpty()) {
+            throw new InvalidProductException("Product name and description cannot be empty");
+        }
+        
         Product product = new Product();
-        product.setName(req.name());
+        product.setName(name);
         product.setPrice(req.price());
-        product.setDescription(req.des());
+        product.setDescription(description);
         product.setUserId(id);
         productRepo.save(product);
     }
@@ -57,8 +66,11 @@ public class ProductService {
             throw new InvalidProductException("Product not exist");
         });
         if (userId.getName().equals(product.userId)) {
-            product.setDescription(req.des());
-            product.setName(req.name());
+            String sanitizedDescription = DataSanitizer.sanitizeProductText(req.des());
+            String sanitizedName = DataSanitizer.sanitizeProductText(req.name());
+            
+            product.setDescription(sanitizedDescription);
+            product.setName(sanitizedName);
             product.setPrice(req.price());
             productRepo.save(product);
             return;
