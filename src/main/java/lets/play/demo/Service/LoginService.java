@@ -38,7 +38,6 @@ public class LoginService {
         if (!passwordEncoder.matches(password, user.password)) {
             throw new InvalidePasswordException("Incorrect Password");
         }
-        // return new LoginResDto("authentication failed", null);
         String token = jwtUtils.generateToken(user.id, user.role);
         return new LoginResDto("user has logged in", token);
     }

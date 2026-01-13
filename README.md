@@ -8,6 +8,7 @@ A modern Spring Boot REST API for managing products and user authentication with
 - **Product Management**: Create, read, update, and delete products with full CRUD operations
 - **Role-Based Access Control**: Admin and user roles with different permission levels
 - **Security**: JWT token authentication, CORS configuration, and Spring Security integration
+- **Data Sanitization**: Comprehensive input validation and sanitization to prevent XSS, SQL injection, and other attacks
 - **MongoDB Integration**: NoSQL database for flexible data storage and management
 - **Validation**: Input validation using Jakarta Validation API and Hibernate Validator
 - **HTTPS Support**: SSL/TLS enabled for secure communication
@@ -69,6 +70,9 @@ src/main/java/lets/play/demo/
 │   ├── RegisterReqDto.java
 │   ├── RegisterResDto.java
 │   └── UsersListDto.java
+├── Utils/                            # Utility classes
+│   ├── DataSanitizer.java           # Core data sanitization and validation
+│   └── DtoSanitizer.java            # DTO-level sanitization
 └── Exceptions/                       # Custom exception classes
     ├── EmailAlreadyExistException.java
     ├── EmailNotFoundException.java
